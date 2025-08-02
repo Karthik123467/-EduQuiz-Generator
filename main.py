@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import os
 from dotenv import load_dotenv
-
+from openai import OpenAI
 if "OPENAI_API_KEY" in st.secrets:
     os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 else:
@@ -40,9 +40,11 @@ def generate_prompt(content, quiz_type, num_questions):
         )
 
 
-# OpenAI Call
+
+client = OpenAI()
+
 def get_quiz(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a helpful AI tutor."},
@@ -50,7 +52,7 @@ def get_quiz(prompt):
         ],
         temperature=0.7
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
 
 # Generate Button
 if st.button("🚀 Generate Quiz"):
