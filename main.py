@@ -3,9 +3,10 @@ import openai
 import os
 from dotenv import load_dotenv
 
-# Load API key
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+if "OPENAI_API_KEY" in st.secrets:
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+else:
+    load_dotenv()
 
 # Page configuration
 st.set_page_config(page_title="EduQuiz Generator", page_icon="🧠", layout="centered")
